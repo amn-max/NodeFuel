@@ -5,7 +5,7 @@ TypeSafeX is a powerful Node.js boilerplate that comes equipped with TypeScript,
 ## Getting Started
 
 To get started with TypeSafeX, you need to clone the repository and install its dependencies:
-- `git clone <repository-url>`
+- `git clone https://github.com/amn-max/TypeSafeX.git`
 - `cd TypeSafeX`
 - `npm install`
 
