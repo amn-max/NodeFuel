@@ -45,6 +45,10 @@ TypeSafeX comes with a number of useful scripts that you can use to develop and 
 
 If you find a bug or want to contribute to TypeSafeX, feel free to open an issue or submit a pull request. We welcome contributions of all kinds, including bug fixes, documentation improvements, and feature additions.
 
+## Inspirations
+
+ - [danielfsousa/express-rest-boilerplate](https://github.com/danielfsousa/express-rest-boilerplate)
+
 ## License
 
-TypeSafeX is licensed under the ISC license. See the LICENSE file for more information.
+[MIT License](README.md) - [Ayush Naik](https://github.com/amn-max)
