@@ -11,8 +11,9 @@ datasource db {
 }
 
 model User {
-  id     Int    @id @default(autoincrement())
-  name   String
-  email  String
-  mobile BigInt
+  id         Int     @id @default(autoincrement())
+  email      String  @unique
+  password   String?
+  googleId   String? @unique
+  facebookId String? @unique
 }

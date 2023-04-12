@@ -60,9 +60,18 @@ const notFound = (req:any, res:any, next?:any) => {
   return handler(err, req, res);
 };
 
+const unauthorized = (req:any, res:any, next?:any) => {
+  const err = new APIError({
+    message: "Unauthorized",
+    status: httpStatus.UNAUTHORIZED,
+  });
+  return handler(err, req, res);
+};
+
 
 export {
   notFound,
   converter,
-  handler
+  handler,
+  unauthorized
 }
