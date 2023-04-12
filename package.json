@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.12.0",
+    "bcrypt": "^5.1.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -26,9 +27,11 @@
     "helmet": "^6.1.5",
     "http-status": "^1.6.2",
     "method-override": "^3.0.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "oauth2-server": "^3.1.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.13",
     "@types/dotenv-safe": "^8.1.2",
@@ -36,6 +39,7 @@
     "@types/method-override": "^0.0.32",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.15.11",
+    "@types/oauth2-server": "^3.0.13",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "apidoc": "^0.54.0",

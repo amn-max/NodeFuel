@@ -10,9 +10,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model OauthAccessToken {
+  id                    String           @id @default(dbgenerated())
+  userId                String
+  applicationId         String
+  token                 String           @unique
+  refreshToken          String?          @unique
+  tokenExpiresAt        DateTime?        @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime?        @db.Timestamptz(6)
+  scopes                Json             @default("[]")
+  createdAt             DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime         @default(now()) @updatedAt @db.Timestamptz(6)
+  application           OauthApplication @relation(fields: [applicationId], references: [id])
+  user                  User             @relation(fields: [userId], references: [id])
+
+  @@index([applicationId])
+  @@index([userId])
+}
+
+model OauthAccessGrant {
+  id                  String           @id @default(dbgenerated())
+  userId              String
+  applicationId       String
+  token               String           @unique
+  expiresAt           DateTime         @db.Timestamptz(6)
+  redirectUri         String
+  codeChallengeMethod String?
+  codeChallenge       String?
+  scopes              Json             @default("[]")
+  createdAt           DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime         @default(now()) @updatedAt @db.Timestamptz(6)
+  application         OauthApplication @relation(fields: [applicationId], references: [id])
+  user                User             @relation(fields: [userId], references: [id])
+
+  @@index([applicationId])
+  @@index([userId])
+}
+
+model OauthApplication {
+  id           String             @id @default(dbgenerated())
+  name         String
+  clientId     String             @unique
+  clientSecret String
+  redirectUris Json               @default("[]")
+  scopes       Json               @default("[]")
+  createdAt    DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
+  grants       Json               @default("[]")
+  accessTokens OauthAccessToken[]
+  accessGrants OauthAccessGrant[]
+}
+
 model User {
-  id     Int    @id @default(autoincrement())
-  name   String
-  email  String
-  mobile BigInt
+  id                String             @id @default(dbgenerated())
+  name              String
+  email             String             @unique
+  encryptedPassword String
+  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
+  accessTokens      OauthAccessToken[]
+  accessGrants      OauthAccessGrant[]
+  identities        UserIdentity[]
+}
+
+model UserIdentity {
+  id        String   @id @default(dbgenerated())
+  userId    String
+  provider  String
+  uid       String
+  name      String?
+  email     String?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([provider, uid])
+  @@index([userId])
 }
