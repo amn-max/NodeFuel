@@ -5,6 +5,7 @@ TypeSafeX is a powerful Node.js boilerplate that comes equipped with TypeScript,
 ## Getting Started
 
 To get started with TypeSafeX, you need to clone the repository and install its dependencies:
+
 - `git clone https://github.com/amn-max/TypeSafeX.git`
 - `cd TypeSafeX`
 - `npm install`
@@ -19,15 +20,22 @@ This command will compile your TypeScript code to JavaScript and place it in the
 
 ## Features
 
-- TypeScript: TypeSafeX is built with TypeScript, a powerful and expressive language that adds static typing to JavaScript, making it more reliable and easier to debug.
-- Prisma ORM: TypeSafeX uses Prisma ORM to interact with your database, allowing you to write safe and type-safe database queries using Prisma's type-safe Query API.
-- Express: TypeSafeX uses the popular Express framework to build HTTP servers, making it easy to handle HTTP requests and build robust APIs.
-- Helmet: TypeSafeX uses the Helmet middleware to secure your app by setting various HTTP headers.
-- Morgan: TypeSafeX uses Morgan to log HTTP requests and responses.
-- Dotenv: TypeSafeX uses Dotenv to load environment variables from a `.env` file.
-- CORS: TypeSafeX uses the CORS middleware to enable Cross-Origin Resource Sharing.
-- Method-Override: TypeSafeX uses Method-Override to override the HTTP method of a request.
-- Express-Validation: TypeSafeX uses Express-Validation to validate HTTP requests.
+- TypeScript-first approach for type safety and scalability
+- Built with popular stacks like Express, Prisma, and Dotenv
+- Nodemon for automatic server restarts during development
+- ESLint for code linting and formatting
+- API documentation generation with Apidoc
+- Production-ready configuration with PM2 and Cross-env
+- Easy project cleanup with Rimraf
+- Husky for Git hooks and automated testing
+- Comprehensive and easy-to-use error handling with Http-Status
+- Increased security with Helmet middleware
+- CORS middleware for secure cross-origin resource sharing
+- Compression middleware for faster server response times
+- Method-override middleware for easy HTTP method overriding
+- Express-validation middleware for request validation and error handling
+
+These features make TypeSafeX a powerful and flexible boilerplate for building high-quality Node.js applications quickly and efficiently.
 
 ## Scripts
 
@@ -47,7 +55,7 @@ If you find a bug or want to contribute to TypeSafeX, feel free to open an issue
 
 ## Inspirations
 
- - [danielfsousa/express-rest-boilerplate](https://github.com/danielfsousa/express-rest-boilerplate)
+- [danielfsousa/express-rest-boilerplate](https://github.com/danielfsousa/express-rest-boilerplate)
 
 ## License
 
