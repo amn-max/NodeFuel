@@ -43,14 +43,20 @@ passport.serializeUser((user: any, done) => {
 });
 
 passport.deserializeUser(async (id: number, done) => {
-  const existingUser = await prisma.user.findUnique({ where: { id } });
-  console.log(existingUser);
-  if (existingUser) {
-    // Remove password property from user object
-    const { password, ...newExistingUser } = existingUser;
-    done(null, newExistingUser);
-  } else {
-    console.log("Cannot deserialize user " + existingUser);
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: { id },
+    });
+    if (existingUser) {
+      // Remove password property from user object
+      const { password, ...newExistingUser } = existingUser;
+      done(null, newExistingUser);
+    } else {
+      console.log("Cannot deserialize user " + existingUser);
+      done(null, false);
+    }
+  } catch (err) {
+    done(err);
   }
 });
 
@@ -61,7 +67,7 @@ if (vars.useGoogleStrategy) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: "http://localhost:4000/auth/google/callback",
+        callbackURL: "http://localhost:4000/v1/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         const { email } = profile._json;
@@ -106,7 +112,7 @@ if (vars.useFacebookStrategy) {
       {
         clientID: process.env.FACEBOOK_APP_ID!,
         clientSecret: process.env.FACEBOOK_APP_SECRET!,
-        callbackURL: "http://localhost:4000/auth/facebook/callback",
+        callbackURL: "http://localhost:4000/v1/auth/facebook/callback",
         profileFields: ["id", "email"],
       },
       async (accessToken, refreshToken, profile, done) => {

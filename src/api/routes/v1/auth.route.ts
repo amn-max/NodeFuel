@@ -58,8 +58,12 @@ if (vars.useGoogleStrategy) {
   authRouter.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),
-    (req: Request, res: Response) => {
-      res.send(req.user);
+    async (req: Request, res: Response) => {
+      const user: any = req.user;
+      const updatedUser = await prisma.user.findUnique({
+        where: { id: user.id },
+      });
+      res.redirect(vars.WEB_URL!);
     }
   );
 }
@@ -74,8 +78,12 @@ if (vars.useFacebookStrategy) {
   authRouter.get(
     "/facebook/callback",
     passport.authenticate("facebook", { failureRedirect: "/login" }),
-    (req: Request, res: Response) => {
-      res.send(req.user);
+    async (req: Request, res: Response) => {
+      const user: any = req.user;
+      const updatedUser = await prisma.user.findUnique({
+        where: { id: user.id },
+      });
+      res.redirect(vars.WEB_URL!);
     }
   );
 }
@@ -90,8 +98,12 @@ if (vars.useTwitterStrategy) {
   authRouter.get(
     "/twitter/callback",
     passport.authenticate("twitter", { failureRedirect: "/login" }),
-    (req: Request, res: Response) => {
-      res.send(req.user);
+    async (req: Request, res: Response) => {
+      const user: any = req.user;
+      const updatedUser = await prisma.user.findUnique({
+        where: { id: user.id },
+      });
+      res.redirect(vars.WEB_URL!);
     }
   );
 }
