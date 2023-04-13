@@ -38,7 +38,7 @@ authRouter.post("/register", async (req: Request, res: Response, next) => {
 authRouter.post("/login", (req, res, next) => {
   passport.authenticate("local", (err: any, user: any, info: any) => {
     if (err) throw err;
-    if (!user) res.send("User not found.");
+    if (!user) res.send({ ...err, ...info });
     else {
       req.logIn(user, (err) => {
         if (err) return next(err);
@@ -57,7 +57,10 @@ if (vars.useGoogleStrategy) {
 
   authRouter.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", {
+      failureRedirect: "/login",
+      failureMessage: true,
+    }),
     async (req: Request, res: Response) => {
       const user: any = req.user;
       const updatedUser = await prisma.user.findUnique({
@@ -77,7 +80,10 @@ if (vars.useFacebookStrategy) {
 
   authRouter.get(
     "/facebook/callback",
-    passport.authenticate("facebook", { failureRedirect: "/login" }),
+    passport.authenticate("facebook", {
+      failureRedirect: "/login",
+      failureMessage: true,
+    }),
     async (req: Request, res: Response) => {
       const user: any = req.user;
       const updatedUser = await prisma.user.findUnique({
@@ -97,7 +103,10 @@ if (vars.useTwitterStrategy) {
 
   authRouter.get(
     "/twitter/callback",
-    passport.authenticate("twitter", { failureRedirect: "/login" }),
+    passport.authenticate("twitter", {
+      failureRedirect: "/login",
+      failureMessage: true,
+    }),
     async (req: Request, res: Response) => {
       const user: any = req.user;
       const updatedUser = await prisma.user.findUnique({

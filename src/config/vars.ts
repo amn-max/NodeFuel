@@ -11,7 +11,7 @@ const vars = {
   port: process.env.PORT,
   WEB_URL: process.env.REDIRECT_WEB_URL,
   useGoogleStrategy: true, // Set this to true if you have a valid Google client ID and secret
-  useFacebookStrategy: false, // Set this to true if you have a valid Facebook app ID and secret
-  useTwitterStrategy: false, // Set this to true if you have a valid Twitter consumerKey and consumerSecret
+  useFacebookStrategy: true, // Set this to true if you have a valid Facebook app ID and secret
+  useTwitterStrategy: true, // Set this to true if you have a valid Twitter consumerKey and consumerSecret
 };
 export default vars;

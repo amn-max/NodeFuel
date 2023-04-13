@@ -18,11 +18,12 @@ passport.use(
       try {
         const user = await prisma.user.findUnique({ where: { email } });
 
-        if (!user) {
+        if (!user || !password || !user.password) {
           return done(null, false, { message: "Incorrect email or password." });
         }
 
         // Compare password hash with user password
+
         const passwordMatch = await bcrypt.compare(password, user.password!);
 
         // If password doesn't match, return error
@@ -157,7 +158,7 @@ if (vars.useTwitterStrategy) {
       {
         consumerKey: process.env.TWITTER_CONSUMER_KEY!,
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET!,
-        callbackURL: "http://localhost:4000/auth/twitter/callback",
+        callbackURL: "http://localhost:4000/v1/auth/twitter/callback",
         includeEmail: true, // Go to your Twitter's project "Permissions" section, click on "Edit", check "Request email address from users" and hit "Save"
       },
       async (accessToken, tokenSecret, profile, done) => {

@@ -15,5 +15,5 @@
     "noUnusedParameters": false,
     "skipLibCheck": true
   },
-  "exclude": ["docs", "build", "node_modules", "*.log"]
+  "exclude": ["docs", "build", "node_modules", "*.log", "src/**/*.spec.ts"]
 }
