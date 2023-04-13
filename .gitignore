@@ -12,3 +12,6 @@ build
 # logs
 *.logs
 *.log
+
+#docs
+docs
