@@ -5,8 +5,10 @@ import {
   StrategyOptionsWithRequest,
 } from "passport-google-oauth20";
 import { Strategy as FacebookStrategy } from "passport-facebook";
+import { Strategy as TwitterStrategy } from "passport-twitter";
 import prisma from "../../prisma";
 import bcrypt = require("bcryptjs");
+import vars from "../../config/vars";
 
 // Configure Passport.js to use a local email and password strategy
 passport.use(
@@ -41,7 +43,7 @@ passport.serializeUser((user: any, done) => {
 });
 
 passport.deserializeUser(async (id: number, done) => {
-  const existingUser= await prisma.user.findUnique({ where: { id } });
+  const existingUser = await prisma.user.findUnique({ where: { id } });
   console.log(existingUser);
   if (existingUser) {
     // Remove password property from user object
@@ -53,87 +55,136 @@ passport.deserializeUser(async (id: number, done) => {
 });
 
 // Configure Passport.js to use a Google OAuth2 strategy
-// passport.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: process.env.GOOGLE_CLIENT_ID!,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//       callbackURL: "http://localhost:5000/auth/google/callback",
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       const { email } = profile._json;
-//       if (email) {
-//         try {
-//           const existingUser = await prisma.user.findUnique({
-//             where: { email },
-//           });
+if (vars.useGoogleStrategy) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        callbackURL: "http://localhost:4000/auth/google/callback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        const { email } = profile._json;
+        if (email) {
+          try {
+            const existingUser = await prisma.user.findUnique({
+              where: { email },
+            });
 
-//           if (existingUser) {
-//             // User already exists, map the existing user to the Google account
-//             await prisma.user.update({
-//               where: { email },
-//               data: { googleId: profile.id },
-//             });
+            if (existingUser) {
+              // User already exists, map the existing user to the Google account
+              await prisma.user.update({
+                where: { email },
+                data: { googleId: profile.id },
+              });
 
-//             return done(null, existingUser);
-//           } else {
-//             // User does not exist, create a new user with the Google account
-//             const newUser = await prisma.user.create({
-//               data: {
-//                 email,
-//                 googleId: profile.id,
-//               },
-//             });
+              return done(null, existingUser);
+            } else {
+              // User does not exist, create a new user with the Google account
+              const newUser = await prisma.user.create({
+                data: {
+                  email,
+                  googleId: profile.id,
+                },
+              });
 
-//             return done(null, newUser);
-//           }
-//         } catch (err: any) {
-//           return done(err);
-//         }
-//       }
-//     }
-//   )
-// );
+              return done(null, newUser);
+            }
+          } catch (err: any) {
+            return done(err);
+          }
+        }
+      }
+    )
+  );
+}
 
 // Configure Passport.js to use a Facebook strategy
-// passport.use(
-//   new FacebookStrategy(
-//     {
-//       clientID: process.env.FACEBOOK_APP_ID!,
-//       clientSecret: process.env.FACEBOOK_APP_SECRET!,
-//       callbackURL: "http://localhost:5000/auth/facebook/callback",
-//       profileFields: ["id", "email"],
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       const { email } = profile._json;
+if (vars.useFacebookStrategy) {
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_APP_ID!,
+        clientSecret: process.env.FACEBOOK_APP_SECRET!,
+        callbackURL: "http://localhost:4000/auth/facebook/callback",
+        profileFields: ["id", "email"],
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        const { email } = profile._json;
 
-//       try {
-//         const existingUser = await prisma.user.findUnique({ where: { email } });
+        try {
+          const existingUser = await prisma.user.findUnique({
+            where: { email },
+          });
 
-//         if (existingUser) {
-//           // User already exists, map the existing user to the Facebook account
-//           await prisma.user.update({
-//             where: { email },
-//             data: { facebookId: profile.id },
-//           });
+          if (existingUser) {
+            // User already exists, map the existing user to the Facebook account
+            await prisma.user.update({
+              where: { email },
+              data: { facebookId: profile.id },
+            });
 
-//           return done(null, existingUser);
-//         } else {
-//           // User does not exist, create a new user with the Facebook account
-//           const newUser = await prisma.user.create({
-//             data: {
-//               email,
-//               facebookId: profile.id,
-//             },
-//           });
+            return done(null, existingUser);
+          } else {
+            // User does not exist, create a new user with the Facebook account
+            const newUser = await prisma.user.create({
+              data: {
+                email,
+                facebookId: profile.id,
+              },
+            });
 
-//           return done(null, newUser);
-//         }
-//       } catch (err) {
-//         return done(err);
-//       }
-//     }
-//   )
-// );
+            return done(null, newUser);
+          }
+        } catch (err) {
+          return done(err);
+        }
+      }
+    )
+  );
+}
+
+// Configure Passport.js to use a Twitter strategy
+if (vars.useTwitterStrategy) {
+  passport.use(
+    new TwitterStrategy(
+      {
+        consumerKey: process.env.TWITTER_CONSUMER_KEY!,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET!,
+        callbackURL: "http://localhost:4000/auth/twitter/callback",
+        includeEmail: true, // Go to your Twitter's project "Permissions" section, click on "Edit", check "Request email address from users" and hit "Save"
+      },
+      async (accessToken, tokenSecret, profile, done) => {
+        const { email } = profile._json;
+        try {
+          const existingUser = await prisma.user.findUnique({
+            where: { email },
+          });
+          if (existingUser) {
+            // User already exists, map the existing user to the Twitter account
+            await prisma.user.update({
+              where: { email },
+              data: { twitterId: profile.id },
+            });
+
+            return done(null, existingUser);
+          } else {
+            // User does not exist, create a new user with the Twitter account
+            const newUser = await prisma.user.create({
+              data: {
+                email,
+                twitterId: profile.id,
+              },
+            });
+
+            return done(null, newUser);
+          }
+        } catch (err) {
+          return done(err);
+        }
+      }
+    )
+  );
+}
 
 export default passport;

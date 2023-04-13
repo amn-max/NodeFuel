@@ -3,6 +3,7 @@ import passport from "../../auth/passport";
 import prisma from "../../../prisma";
 import bcrypt = require("bcryptjs");
 import jwt = require("jsonwebtoken");
+import vars from "../../../config/vars";
 
 const authRouter = Router();
 
@@ -44,44 +45,63 @@ authRouter.post("/login", (req, res, next) => {
         res.send({ ...user });
       });
     }
-  })(req,res,next);
+  })(req, res, next);
 });
 
-
 // Google Login
-authRouter.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+if (vars.useGoogleStrategy) {
+  authRouter.get(
+    "/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
 
-authRouter.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req: Request, res: Response) => {
-    res.redirect("/");
-  }
-);
+  authRouter.get(
+    "/google/callback",
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    (req: Request, res: Response) => {
+      res.send(req.user);
+    }
+  );
+}
 
 // Facebook Login
-authRouter.get(
-  "/facebook",
-  passport.authenticate("facebook", { scope: ["email"] })
-);
+if (vars.useFacebookStrategy) {
+  authRouter.get(
+    "/facebook",
+    passport.authenticate("facebook", { scope: ["email"] })
+  );
 
-authRouter.get(
-  "/facebook/callback",
-  passport.authenticate("facebook", { failureRedirect: "/login" }),
-  (req: Request, res: Response) => {
-    res.redirect("/");
-  }
-);
+  authRouter.get(
+    "/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/login" }),
+    (req: Request, res: Response) => {
+      res.send(req.user);
+    }
+  );
+}
+
+// Twitter Login
+if (vars.useTwitterStrategy) {
+  authRouter.get(
+    "/twitter",
+    passport.authenticate("twitter", { scope: ["email"] })
+  );
+
+  authRouter.get(
+    "/twitter/callback",
+    passport.authenticate("twitter", { failureRedirect: "/login" }),
+    (req: Request, res: Response) => {
+      res.send(req.user);
+    }
+  );
+}
 
 // Logout
 authRouter.get("/logout", (req: Request, res: Response, next) => {
   req.logout((err) => {
     if (err) return next(err);
     else {
-      res.sendStatus(200)
+      res.sendStatus(200);
     }
   });
 });

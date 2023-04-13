@@ -16,4 +16,5 @@ model User {
   password   String?
   googleId   String? @unique
   facebookId String? @unique
+  twitterId  String? @unique
 }
