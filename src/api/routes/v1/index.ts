@@ -1,6 +1,7 @@
 import express = require("express");
 import ensureAuthenticated from "../../middlewares/ensureAuthenticated";
 import authRouter from "./auth.route";
+import userRouter from "./user.route";
 
 const router = express.Router();
 
@@ -14,10 +15,15 @@ router.get("/status", (req, res) => res.send("OK"));
  */
 router.use("/docs", express.static("docs"));
 
+/**
+ * use v1/auth
+ */
 router.use('/auth', authRouter)
 
-router.get('/user', ensureAuthenticated , (req, res) => {
-    res.send(req.user)
-});
+
+/**
+ * use v1/me
+ */
+router.use('/me', ensureAuthenticated , userRouter);
 
 export default router;
