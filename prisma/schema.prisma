@@ -12,9 +12,10 @@ datasource db {
 
 model User {
   id         Int     @id @default(autoincrement())
-  email      String  @unique
+  email      String? @unique
   password   String?
   googleId   String? @unique
   facebookId String? @unique
   twitterId  String? @unique
+  githubId   String? @unique
 }
