@@ -3,7 +3,6 @@ import { Router, Request, Response } from "express";
 import passport from "../../auth/passport";
 import prisma from "../../../prisma";
 import bcrypt = require("bcryptjs");
-import jwt = require("jsonwebtoken");
 import vars from "../../../config/vars";
 
 const authRouter = Router();
