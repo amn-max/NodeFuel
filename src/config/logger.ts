@@ -1,22 +1,19 @@
 import winston = require("winston");
 
 const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
+  level: "info", // set the level of logging to "info" or higher
+  format: winston.format.json(), // format logs in JSON
   transports: [
-    //
-    // - Write to all logs with level `info` and below to `combined.log`
-    // - Write all logs error (and below) to `error.log`.
-    //
+    // Define two transports:
+    // 1. Write logs with "error" level or higher to "error.log" file
+    // 2. Write all logs with level "info" and below to "combined.log" file
     new winston.transports.File({ filename: "error.log", level: "error" }),
     new winston.transports.File({ filename: "combined.log" }),
   ],
 });
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
+// If the environment is not in production, also log to console with the following format:
+// `${info.level}: ${info.message} JSON.stringify({ ...rest })
 if (process.env.NODE_ENV !== "production") {
   logger.add(
     new winston.transports.Console({
@@ -25,9 +22,9 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-
+// Export a "stream" object that can be used to write logs to the logger instance
 export const stream = {
-  write: (message:any) => {
+  write: (message: any) => {
     logger.info(message);
   },
 };
