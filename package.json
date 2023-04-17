@@ -1,7 +1,7 @@
 {
-  "name": "typesafex",
+  "name": "nodefuel",
   "version": "1.0.0",
-  "description": "A TypeScript-First Boilerplate for Building High-Quality Node.js Applications",
+  "description": "A TypeScript-First Boilerplate with Multi-Auth for Building High-Quality Node.js Applications",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
