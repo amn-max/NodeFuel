@@ -4,7 +4,7 @@ interface APIErrorInterface {
   message: string;
   errors?: any;
   stack?: string;
-  status?: HttpStatus;
+  status?: HttpStatus | number;
   isPublic?: boolean;
 }
 
@@ -29,4 +29,4 @@ class APIError extends ExtendableError {
   }
 }
 
-module.exports = APIError;
+export default APIError;

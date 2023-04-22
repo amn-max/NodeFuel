@@ -1,16 +1,21 @@
-import express = require("express");
-import morgan = require("morgan");
-import bodyParser = require("body-parser");
-import compress = require("compression");
-import methodOverride = require("method-override");
-import cors = require("cors");
+import express from "express";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import compress from "compression";
+import methodOverride from "method-override";
+import cors from "cors";
 import helmet from "helmet";
 import router from "../api/routes/v1";
 import { converter, handler, notFound } from "../api/middlewares/error";
 import { stream } from "./logger";
-import passport from '../api/auth/passport'
-import cookieParser = require("cookie-parser");
-import session = require("express-session");
+import passport from "../api/auth/passport";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import ejs from "ejs";
+import path from "path";
+
+const rootPath = path.dirname(path.dirname(__dirname));
+
 /**
  * Express instance
  * @public
@@ -20,8 +25,13 @@ const app = express();
 // request logging. dev: console | production: file
 app.use(morgan("combined", { stream }));
 
+//views
+const viewsPath = path.join(rootPath, "src", "views");
+app.set("views", viewsPath);
+app.set("view engine", "ejs");
+
 // cookie
-app.use(cookieParser(process.env.SERVER_SECRET))
+app.use(cookieParser(process.env.SERVER_SECRET));
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
@@ -38,11 +48,12 @@ app.use(methodOverride());
 app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
-app.use(cors({
+app.use(
+  cors({
     origin: "http://localhost:5173",
-    credentials:true // most important
-}));
-
+    credentials: true, // most important
+  })
+);
 
 // session secret for passport
 app.use(
@@ -72,4 +83,4 @@ app.use(notFound);
 // error handler, send stacktrace only during development
 app.use(handler);
 
-module.exports = app;
+export default app;

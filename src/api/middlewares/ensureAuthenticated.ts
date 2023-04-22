@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-const APIError = require("../errors/api-error");
+import APIError from "../errors/api-error";
 
 // ensureAuthenticated
 // check if user is authenticated

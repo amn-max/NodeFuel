@@ -1,5 +1,5 @@
-import path = require("path");
-import dotenv = require("dotenv-safe");
+import path from "path";
+import dotenv from "dotenv-safe";
 // import .env variables
 dotenv.config({
   path: path.join(__dirname, "../../.env"),
