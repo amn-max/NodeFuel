@@ -11,7 +11,6 @@ import { stream } from "./logger";
 import passport from "../api/auth/passport";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import ejs from "ejs";
 import path from "path";
 
 const rootPath = path.dirname(path.dirname(__dirname));
@@ -73,6 +72,11 @@ app.use(passport.session());
 
 // mount api v1 routes
 app.use("/v1", router);
+
+//welcome
+app.get("/", (req, res) => {
+  res.send("Hey Looks Like you got it working! Congrats.");
+});
 
 // if error is not an instanceOf APIError, convert it.
 app.use(converter);
