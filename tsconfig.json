@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["es6"],
+    "target": "ES2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "lib": ["ES7"],
     "allowJs": true,
     "outDir": "build",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,
