@@ -13,7 +13,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import path from "path";
 import vars from "./vars";
-
+import FileStoreFactory from "session-file-store";
 const rootPath = path.dirname(path.dirname(__dirname));
 
 /**
@@ -55,8 +55,16 @@ app.use(
   })
 );
 
+//create store
+const FileStore = FileStoreFactory(session);
+
 // session secret for passport
 let sess: any = {
+  store: new FileStore({
+    path: path.join(rootPath, "tmp", "sessions"),
+    secret: process.env.SERVER_SECRET!,
+  }),
+  domain: vars.WEB_URL,
   secret: process.env.SERVER_SECRET!,
   resave: true,
   saveUninitialized: true,
@@ -66,7 +74,7 @@ let sess: any = {
 if (vars.env === "production") {
   app.set("trust proxy", 1); // trust first proxy
   sess.cookie.secure = true; // serve secure cookies
-  sess.cookie.maxAge = 3600000; // serve secure cookies
+  sess.cookie.maxAge = 3600000; // serve timeout cookies
 }
 app.use(session(sess));
 

@@ -38,7 +38,8 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "passport-twitter": "^1.0.4"
+    "passport-twitter": "^1.0.4",
+    "session-file-store": "^1.5.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -59,6 +60,7 @@
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-local": "^1.0.35",
     "@types/passport-twitter": "^1.0.37",
+    "@types/session-file-store": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "apidoc": "^0.54.0",

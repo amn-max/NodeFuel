@@ -1,6 +1,7 @@
 import prisma from "../../../prisma";
 import express from "express";
 import asyncHandler from "express-async-handler";
+import restrictToSelf from "../../middlewares/restrictToSelf";
 const userRouter = express.Router();
 
 // Get all users
@@ -23,6 +24,7 @@ userRouter.get(
 // Get a single user by ID
 userRouter.get(
   "/:id",
+  restrictToSelf,
   asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const user = await prisma.user.findUnique({

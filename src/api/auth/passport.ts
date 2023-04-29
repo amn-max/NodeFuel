@@ -95,7 +95,8 @@ if (vars.useGoogleStrategy) {
             googleId: profile.id,
           },
         });
-        if (existingGoogleId) return done("Account already in use!.", false);
+        // return if existing
+        if (existingGoogleId) return done(null, existingGoogleId);
         const { email } = profile._json;
         if (!req.user && email) {
           // Not logged-in. Authenticate based on Google account or check existing email in database.
@@ -166,8 +167,8 @@ if (vars.useFacebookStrategy) {
               facebookId: profile.id,
             },
           });
-          if (existingFacebookId)
-            return done("Account already in use!.", false);
+          // return if existing
+          if (existingFacebookId) return done(null, existingFacebookId);
 
           if (!req.user) {
             // Not logged-in. Authenticate based on Facebook account.
@@ -238,7 +239,9 @@ if (vars.useTwitterStrategy) {
             twitterId: profile.id,
           },
         });
-        if (existingTwitterId) return done("Account already in use!.", false);
+
+        // return if existing
+        if (existingTwitterId) return done(null, existingTwitterId);
         if (!req.user) {
           // Not logged-in. Authenticate based on Twitter account or check existing email in database.
           const { email } = profile._json;
@@ -312,7 +315,9 @@ if (vars.useGithubStrategy) {
               githubId: profile.id,
             },
           });
-          if (existingGithubId) return done("Account already in use!.", false);
+
+          // return if existing
+          if (existingGithubId) return done(null, existingGithubId);
           if (!req.user) {
             // Not logged-in. Authenticate based on Github account.
             const newUser = await prisma.user.upsert({

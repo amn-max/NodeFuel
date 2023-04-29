@@ -44,7 +44,7 @@ authRouter.post(
         });
         req.logIn(user, (err) => {
           if (err) return next(err);
-          res.send({ user });
+          res.send({ content: user });
         });
       }
     } catch (error) {
@@ -64,7 +64,7 @@ authRouter.post(
         req.logIn(user, (err) => {
           if (err) return next(err);
           user.password = user.password ? "true" : "false";
-          res.send({ ...user });
+          res.send({ content: user });
         });
       }
     })(req, res, next);
