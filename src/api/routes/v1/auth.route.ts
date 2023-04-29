@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import { Router, Request, Response } from "express";
 import passport from "../../auth/passport";
 import prisma from "../../../prisma";
-import bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 import vars from "../../../config/vars";
 
 const authRouter = Router();

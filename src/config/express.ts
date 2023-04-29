@@ -12,6 +12,7 @@ import passport from "../api/auth/passport";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import path from "path";
+import vars from "./vars";
 
 const rootPath = path.dirname(path.dirname(__dirname));
 
@@ -49,20 +50,25 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: vars.WEB_URL,
     credentials: true, // most important
   })
 );
 
 // session secret for passport
-app.use(
-  session({
-    secret: process.env.SERVER_SECRET!,
-    resave: true,
-    saveUninitialized: true,
-    // cookie: { secure: true, maxAge:3600000 }, // remove this line for HTTP connection
-  })
-);
+let sess: any = {
+  secret: process.env.SERVER_SECRET!,
+  resave: true,
+  saveUninitialized: true,
+  //cookie: { secure: true, maxAge:3600000 }, // remove this line for HTTP connection
+};
+
+if (vars.env === "production") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+  sess.cookie.maxAge = 3600000; // serve secure cookies
+}
+app.use(session(sess));
 
 // initiate passport middleware before the routes registration
 app.use(passport.initialize());
