@@ -1,22 +1,21 @@
-import prisma from "../../../prisma";
-import express from "express";
-import asyncHandler from "express-async-handler";
-import restrictToSelf from "../../middlewares/restrictToSelf";
-const userRouter = express.Router();
+
+  import express from "express";
+  import asyncHandler from "express-async-handler";
+  import restrictToSelf from "../../middlewares/restrictToSelf";
+  import {
+    createUser,
+    deleteUser,
+    getAllUsers,
+    getUser,
+    updateUser,
+  } from "../../services/user.service";
+  const userRouter = express.Router();
 
 // Get all users
 userRouter.get(
   "/",
   asyncHandler(async (req, res) => {
-    let users;
-    if (req.params.skip && req.params.take) {
-      users = await prisma.user.findMany({
-        skip: parseInt(req.params.skip),
-        take: parseInt(req.params.take),
-      });
-    } else {
-      users = await prisma.user.findMany();
-    }
+    const users = await getAllUsers(req.params.skip, req.params.take);
     res.json({ content: users });
   })
 );
@@ -26,13 +25,7 @@ userRouter.get(
   "/:id",
   restrictToSelf,
   asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id);
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
-    if (!user) {
-      res.status(404).json({ error: "user not found" });
-    }
+    const user = await getUser(req.params.id);
     res.json({ content: user });
   })
 );
@@ -41,8 +34,7 @@ userRouter.get(
 userRouter.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { body } = req;
-    const user = await prisma.user.create({ data: body });
+    const user = createUser(req.body);
     res.json({ content: user });
   })
 );
@@ -51,12 +43,7 @@ userRouter.post(
 userRouter.put(
   "/:id",
   asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id);
-    const { body } = req;
-    const user = await prisma.user.update({
-      where: { id },
-      data: body,
-    });
+    const user = updateUser(req.params.id, req.body);
     res.json({ content: user });
   })
 );
@@ -65,14 +52,9 @@ userRouter.put(
 userRouter.delete(
   "/:id",
   asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id);
-    const user = await prisma.user.delete({
-      where: { id },
-    });
-    if (user) {
-      res.status(404).json({ error: "user not found" });
-    }
-    res.json({ message: "user deleted successfully" });
+    const message = await deleteUser(req.params.id);
+    res.json({ message: message });
   })
 );
 export default userRouter;
+
