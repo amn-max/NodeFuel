@@ -1,4 +1,4 @@
-import prisma from "../../prisma";
+import prisma from "../../libs/prisma";
 
 export const getAllUsers = async (skip: any = null, take: any = null) => {
   let users;

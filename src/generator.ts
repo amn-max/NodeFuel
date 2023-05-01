@@ -2,7 +2,7 @@ import readline from "readline";
 import { program } from "commander";
 import fs from "fs-extra";
 import { capitalizeFirstLetter } from "./helpers/helpers";
-import prisma from "./prisma";
+import prisma from "./libs/prisma";
 
 const lmao = async () => {
   program.option("--model <char>", "specify the name of the model");

@@ -13,7 +13,7 @@ import {
   Profile as GithubProfile,
   Strategy as GitHubStrategy,
 } from "passport-github2";
-import prisma from "../../prisma";
+import prisma from "../../libs/prisma";
 import bcrypt from "bcryptjs";
 import vars from "../../config/vars";
 import { userSerializer } from "./userSerializer";
