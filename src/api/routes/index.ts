@@ -1,5 +1,5 @@
 import express from "express";
-import ensureAuthenticated from "../../middlewares/ensureAuthenticated";
+import ensureAuthenticated from "../middlewares/ensureAuthenticated";
 import authRouter from "./auth.route";
 import userRouter from "./user.route";
 import asyncHandler from "express-async-handler";
@@ -34,7 +34,7 @@ router.use("/auth", authRouter);
 /**
  * use v1/me
  */
-router.use("/me", ensureAuthenticated, userRouter);
+router.use("/me", userRouter);
 
 /**
  * use v1/error

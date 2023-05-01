@@ -46,14 +46,14 @@ const lmao = async () => {
   const routeHandlers = `
   import express from "express";
   import asyncHandler from "express-async-handler";
-  import restrictToSelf from "../../middlewares/restrictToSelf";
+  import restrictToSelf from "../middlewares/restrictToSelf";
   import {
     create${cModel},
     delete${cModel},
     getAll${cModel}s,
     get${cModel},
     update${cModel},
-  } from "../../services/${model}.service";
+  } from "../services/${model}.service";
   const ${model}Router = express.Router();
 
 // Get all ${model}s
@@ -79,7 +79,7 @@ ${model}Router.get(
 ${model}Router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const ${model} = create${cModel}(req.body);
+    const ${model} = await create${cModel}(req.body);
     res.json({ content: ${model} });
   })
 );
@@ -88,7 +88,7 @@ ${model}Router.post(
 ${model}Router.put(
   "/:id",
   asyncHandler(async (req, res) => {
-    const ${model} = update${cModel}(req.params.id, req.body);
+    const ${model} = await update${cModel}(req.params.id, req.body);
     res.json({ content: ${model} });
   })
 );

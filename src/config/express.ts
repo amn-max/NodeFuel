@@ -5,7 +5,7 @@ import compress from "compression";
 import methodOverride from "method-override";
 import cors from "cors";
 import helmet from "helmet";
-import router from "../api/routes/v1";
+import router from "../api/routes";
 import { converter, handler, notFound } from "../api/middlewares/error";
 import { stream } from "./logger";
 import passport from "../api/auth/passport";

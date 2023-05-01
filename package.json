@@ -4,7 +4,6 @@
   "description": "A TypeScript-First Boilerplate with Multi-Auth for Building High-Quality Node.js Applications",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon",
     "build": "rimraf ./build && tsc",
     "start": "cross-env NODE_ENV=production npm run build && pm2 start build/index.js",
@@ -12,7 +11,8 @@
     "docs": "apidoc -i src -o docs",
     "postdocs": "open-cli docs/index.html",
     "validate": "npm run lint && npm run test",
-    "generate": "ts-node-esm ./src/generator.ts"
+    "generate": "ts-node-esm ./src/generator.ts",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -52,6 +52,7 @@
     "@types/express-session": "^1.17.7",
     "@types/fs-extra": "^11.0.1",
     "@types/method-override": "^0.0.32",
+    "@types/mocha": "^10.0.1",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.15.11",
     "@types/passport": "^1.0.12",

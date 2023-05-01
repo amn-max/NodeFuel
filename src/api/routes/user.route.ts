@@ -1,15 +1,14 @@
-
-  import express from "express";
-  import asyncHandler from "express-async-handler";
-  import restrictToSelf from "../../middlewares/restrictToSelf";
-  import {
-    createUser,
-    deleteUser,
-    getAllUsers,
-    getUser,
-    updateUser,
-  } from "../../services/user.service";
-  const userRouter = express.Router();
+import express from "express";
+import asyncHandler from "express-async-handler";
+import restrictToSelf from "../middlewares/restrictToSelf";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+} from "../services/user.service";
+const userRouter = express.Router();
 
 // Get all users
 userRouter.get(
@@ -34,7 +33,8 @@ userRouter.get(
 userRouter.post(
   "/",
   asyncHandler(async (req, res) => {
-    const user = createUser(req.body);
+    const user = await createUser(req.body);
+    console.log(user);
     res.json({ content: user });
   })
 );
@@ -43,7 +43,7 @@ userRouter.post(
 userRouter.put(
   "/:id",
   asyncHandler(async (req, res) => {
-    const user = updateUser(req.params.id, req.body);
+    const user = await updateUser(req.params.id, req.body);
     res.json({ content: user });
   })
 );
@@ -57,4 +57,3 @@ userRouter.delete(
   })
 );
 export default userRouter;
-

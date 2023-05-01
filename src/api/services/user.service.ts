@@ -1,7 +1,6 @@
-
 import prisma from "../../prisma";
 
-export const getAllUsers = async (skip: any, take: any) => {
+export const getAllUsers = async (skip: any = null, take: any = null) => {
   let users;
   if (skip && take) {
     users = await prisma.user.findMany({
@@ -49,4 +48,3 @@ export const deleteUser = async (user_id: any): Promise<string> => {
   }
   return "user deleted successfully";
 };
-
