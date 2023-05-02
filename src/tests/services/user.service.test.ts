@@ -18,6 +18,6 @@ describe("getAllUsers", () => {
     };
     prisma.user.findMany.mockResolvedValue([user]);
     const result = await getAllUsers();
-    expect(result[0]).toHaveProperty("name");
+    expect(result[0]).toBe(user);
   });
 });
