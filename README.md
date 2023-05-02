@@ -2,6 +2,36 @@
 
 NodeFuel is a powerful Node.js boilerplate that is designed to help you build high-quality backend applications with ease. It comes equipped with TypeScript, Prisma ORM, and a range of other essential tools that make it easy to get started with your project quickly. The boilerplate is built on an Express stack and has been developed with a focus on security, scalability, and flexibility.
 
+## Project Structure
+
+    prisma/
+    ┣ migrations/
+    ┗ schema.prisma
+    src/
+    ┣ api/
+    ┃ ┣ auth/
+    ┃ ┣ errors/
+    ┃ ┣ middlewares/
+    ┃ ┣ routes/
+    ┃ ┗ services/
+    ┣ config/
+    ┃ ┣ express.ts
+    ┃ ┣ logger.ts
+    ┃ ┗ vars.ts
+    ┣ helpers/
+    ┃ ┗ helpers.ts
+    ┣ libs/
+    ┃ ┣ **mocks**/
+    ┃ ┗ prisma.ts
+    ┣ tests/
+    ┃ ┗ services/
+    ┣ views/
+    ┃ ┗ error.ejs
+    ┣ generator.ts
+    ┗ index.ts
+    tmp/
+    ┗ sessions/
+
 ## Multi-Authentication Feature
 
 In addition to its existing features, NodeFuel now supports multi-authentication using Passport. You can easily configure the boilerplate to support authentication with popular social media platforms like Google, Facebook, Twitter, and Github. This feature makes it easy to create secure applications that allow users to sign in with their social media accounts.
@@ -48,8 +78,7 @@ NodeFuel comes equipped with a range of powerful features that make it easy to b
 
 - TypeScript-first approach for type safety and scalability
 - Built with popular stacks like Express, Prisma, and Dotenv
-- Nodemon for automatic server restarts during development
-- ESLint for code linting and formatting
+- API route generator script for quickly creating basic CRUD endpoints for new models
 - API documentation generation with Apidoc
 - Production-ready configuration with PM2 and Cross-env
 - Easy project cleanup with Rimraf
@@ -60,6 +89,37 @@ NodeFuel comes equipped with a range of powerful features that make it easy to b
 - Compression middleware for faster server response times
 - Method-override middleware for easy HTTP method overriding
 - Express-validation middleware for request validation and error handling
+
+## API Route Generator
+
+You can use the included API route generator script to quickly generate basic CRUD endpoints for a new model. To use the script, run the following command:
+
+`npm run generate ModelName`
+
+Replace `ModelName` with the name of your model. The script will generate a new file in the `src/api/routes` directory with basic route handlers for the model's CRUD operations.
+
+Note that the script assumes that the model has already been defined in your prisma.schema file and that you have generated the Prisma client by running `npx prisma generate`.
+
+## Session Management
+
+This boilerplate uses Express Session middleware to manage user sessions. A local session store has been implemented using `session-file-store` package.
+
+By default, the session middleware uses a memory store, but this can cause issues in production environments when running multiple server instances or restarting the server. Using a persistent store like session-file-store ensures that session data is stored securely and can be retrieved even if the server is restarted.
+
+To configure session settings, edit the `config/express.ts` file. By default, the session middleware uses a secret key for signing the session ID cookie. You should change this to a unique value in production to ensure the security of user sessions.
+
+## Testing
+
+- `npm run test:unit`
+
+This command will run the unit tests using the configuration file `vitest.config.unit.ts`.
+
+If you want to run the unit tests with the UI, use the following command:
+
+- `npm run test:unit:ui`
+
+This command will run the unit tests using the configuration file `vitest.config.unit.ts` and display the UI in the
+browser.
 
 ## Scripts
 
@@ -75,7 +135,7 @@ NodeFuel comes with a number of useful scripts that you can use to develop and b
 
 ## Contributing
 
-If you find a bug or want to contribute to NodeFuel, feel free to open an issue or submit a pull request. We welcome contributions of all kinds, including bug fixes, documentation improvements, and feature additions.
+If you find a bug or want to contribute to NodeFuel, feel free to open an issue or submit a pull request.
 
 ## Inspirations
 

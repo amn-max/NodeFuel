@@ -1,0 +1,54 @@
+# To use this YAML file, you will need to define the same environment variables as before (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, EB_APP_NAME, EB_ENV_NAME, EB_PLATFORM), as well as the following variables:
+
+# EB_CNAME_PREFIX: The prefix for the Elastic Beanstalk environment's CNAME.
+# EB_INSTANCE_TYPE: The instance type for the Elastic Beanstalk environment (e.g. t2.micro).
+# EB_KEYNAME: The name of the EC2 key pair to use for the Elastic Beanstalk environment.
+# EB_TAGS: A comma-separated list of tags to apply to the Elastic Beanstalk environment (e.g. key1=value1,key2=value2).
+
+image: node:14
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+
+test:
+  stage: test
+  script:
+    - npm run test
+
+deploy:
+  stage: deploy
+  before_script:
+    - echo "Installing AWS CLI..."
+    - apt-get update && apt-get install -y python3-pip
+    - pip3 install awscli
+  script:
+    - echo "Deploying to Elastic Beanstalk..."
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_REGION
+    - |
+      if ! aws elasticbeanstalk describe-environments --environment-names $EB_ENV_NAME >/dev/null 2>&1; then
+        echo "Creating new environment $EB_ENV_NAME"
+        eb create $EB_ENV_NAME --region $AWS_REGION --cname-prefix $EB_CNAME_PREFIX --platform $EB_PLATFORM --instance-type $EB_INSTANCE_TYPE --keyname $EB_KEYNAME --tags $EB_TAGS
+      else
+        echo "Updating environment $EB_ENV_NAME"
+        eb use $EB_ENV_NAME --region $AWS_REGION
+        eb deploy $EB_ENV_NAME
+      fi
+    - npm run start
+  environment:
+    name: $EB_ENV_NAME
+  only:
+    - master
