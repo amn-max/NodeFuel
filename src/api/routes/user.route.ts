@@ -34,7 +34,6 @@ userRouter.post(
   "/",
   asyncHandler(async (req, res) => {
     const user = await createUser(req.body);
-    console.log(user);
     res.json({ content: user });
   })
 );

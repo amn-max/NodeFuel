@@ -106,9 +106,9 @@ export default ${model}Router;
 `;
 
   const services = `
-import prisma from "../../prisma";
+import prisma from "../../libs/prisma";
 
-export const getAll${cModel}s = async (skip: any, take: any) => {
+export const getAll${cModel}s = async (skip: any = null, take: any = null) => {
   let ${model}s;
   if (skip && take) {
     ${model}s = await prisma.${model}.findMany({

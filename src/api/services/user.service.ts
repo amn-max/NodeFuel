@@ -1,3 +1,4 @@
+
 import prisma from "../../libs/prisma";
 
 export const getAllUsers = async (skip: any = null, take: any = null) => {
@@ -48,3 +49,4 @@ export const deleteUser = async (user_id: any): Promise<string> => {
   }
   return "user deleted successfully";
 };
+

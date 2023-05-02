@@ -20,5 +20,12 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "exclude": ["docs", "build", "node_modules", "*.log", "src/**/*.spec.ts"]
+  "exclude": [
+    "docs",
+    "build",
+    "node_modules",
+    "*.log",
+    "src/**/*.test.ts",
+    "./vitest.config.unit.ts"
+  ]
 }
