@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "^4.16.2",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -79,7 +79,7 @@
     "husky": "^8.0.3",
     "nodemon": "^2.0.22",
     "open-cli": "^7.2.0",
-    "prisma": "^4.13.0",
+    "prisma": "^4.16.2",
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
